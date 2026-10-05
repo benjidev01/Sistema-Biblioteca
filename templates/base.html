@@ -157,8 +157,8 @@
 
                 <div class="d-flex align-items-center text-white">
                     <div class="me-3 text-end">
-                        <span class="d-block fw-semibold text-white">{{ user.username }}</span>
-                        <span class="badge bg-primary bg-opacity-20 text-primary border border-primary border-opacity-20 badge-role">
+                        <span class="d-block fw-semibold text-white mb-0.5">{{ user.username }}</span>
+                        <span class="badge bg-secondary bg-opacity-25 text-white border border-light border-opacity-25 badge-role">
                             {% if user.is_superuser %}
                                 Administrador Principal
                             {% elif user.groups.all %}
@@ -168,6 +168,7 @@
                             {% endif %}
                         </span>
                     </div>
+
                     <a href="{% url 'biblioteca:logout' %}" class="btn btn-outline-light btn-sm rounded-pill px-3">
                         <i class="fa-solid fa-right-from-bracket me-1"></i> Salir
                     </a>
