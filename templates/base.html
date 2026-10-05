@@ -3,38 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Sistema Biblioteca{% endblock %}</title>
+    <title>{% block title %}Biblioteca Pública{% endblock %}</title>
+    <!-- Google Fonts (Outfit & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
     <style>
         :root {
-            --bs-body-bg: #f8f9fa;
-            --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+            --primary-color: #1e293b;
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
+            --bg-color: #f8fafc;
         }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: #334155;
+        }
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand {
+            font-family: var(--font-heading);
+        }
+
         .navbar-custom {
-            background: var(--primary-gradient);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: #0f172a;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 0.85rem 0;
         }
+
+        .navbar-brand {
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: #94a3b8 !important;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            padding: 0.5rem 1rem !important;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
         .card-custom {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease-in-out;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            transition: all 0.25s ease;
         }
+
         .card-custom:hover {
-            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
         }
+
         .table-custom {
             background: #ffffff;
-            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
         }
+
+        .table-custom th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table-custom td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.55rem 1.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            border-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
         .badge-role {
-            font-size: 0.8rem;
-            padding: 0.35em 0.65em;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3em 0.75em;
+            border-radius: 6px;
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -42,11 +122,10 @@
 <body class="d-flex flex-column min-vh-100">
 
     {% if user.is_authenticated %}
-    <!-- Navbar Dinámica según el Rol -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{% url 'biblioteca:home' %}">
-                <i class="fa-solid fa-book-bookmark me-2"></i>Gestión Biblioteca
+                <i class="fa-solid fa-book-open-reader text-primary me-2"></i>Biblioteca Pública
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -54,12 +133,12 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'biblioteca:home' %}"><i class="fa-solid fa-house me-1"></i> Inicio</a>
+                        <a class="nav-link" href="{% url 'biblioteca:home' %}"><i class="fa-solid fa-chart-line me-1"></i> Inicio</a>
                     </li>
 
                     {% if perms.biblioteca.view_socio %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'biblioteca:socio_list' %}"><i class="fa-solid fa-users me-1"></i> Socios</a>
+                        <a class="nav-link" href="{% url 'biblioteca:socio_list' %}"><i class="fa-solid fa-id-card me-1"></i> Socios</a>
                     </li>
                     {% endif %}
 
@@ -71,17 +150,17 @@
 
                     {% if perms.biblioteca.view_prestamo %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'biblioteca:prestamo_list' %}"><i class="fa-solid fa-handshake me-1"></i> Préstamos</a>
+                        <a class="nav-link" href="{% url 'biblioteca:prestamo_list' %}"><i class="fa-solid fa-right-left me-1"></i> Préstamos</a>
                     </li>
                     {% endif %}
                 </ul>
 
                 <div class="d-flex align-items-center text-white">
                     <div class="me-3 text-end">
-                        <span class="d-block fw-semibold">{{ user.username }}</span>
-                        <span class="badge bg-warning text-dark badge-role">
+                        <span class="d-block fw-semibold text-white">{{ user.username }}</span>
+                        <span class="badge bg-primary bg-opacity-20 text-primary border border-primary border-opacity-20 badge-role">
                             {% if user.is_superuser %}
-                                Superusuario
+                                Administrador Principal
                             {% elif user.groups.all %}
                                 {{ user.groups.first.name }}
                             {% else %}
@@ -98,13 +177,11 @@
     </nav>
     {% endif %}
 
-    <!-- Contenido Principal -->
     <main class="container flex-grow-1">
-        <!-- Mensajes Flash de Django -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm mb-4" role="alert">
-                    <i class="fa-solid fa-circle-info me-2"></i>{{ message }}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm mb-4 rounded-3 border-0" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i>{{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             {% endfor %}
@@ -113,14 +190,12 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
     <footer class="footer bg-white border-top py-3 mt-5 text-center text-muted">
         <div class="container">
-            <small>&copy; 2026 Sistema de Gestión de Biblioteca Pública | Evaluación Sumativa #2</small>
+            <small class="fw-semibold text-secondary">Biblioteca Pública</small>
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     {% block extra_js %}{% endblock %}
 </body>
