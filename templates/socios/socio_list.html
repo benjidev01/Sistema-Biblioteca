@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Socios | Sistema Biblioteca{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-dark mb-0">Mantenedor de Socios</h2>
+        <p class="text-muted small mb-0">Gestión de datos de socios y fotos de perfil (ImageField)</p>
+    </div>
+    {% if perms.biblioteca.add_socio %}
+    <a href="{% url 'biblioteca:socio_create' %}" class="btn btn-primary shadow-sm rounded-pill">
+        <i class="fa-solid fa-plus me-1"></i> Registrar Socio
+    </a>
+    {% endif %}
+</div>
+
+<!-- Buscador -->
+<div class="card card-custom p-3 mb-4">
+    <form method="GET" class="row g-2">
+        <div class="col-md-10">
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                <input type="text" name="q" value="{{ query }}" class="form-control border-start-0" placeholder="Buscar por Nombre, RUT o Email...">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-secondary w-100"><i class="fa-solid fa-search me-1"></i> Buscar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Tabla de Socios -->
+<div class="table-responsive table-custom">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>Foto</th>
+                <th>RUT</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Fecha Reg.</th>
+                <th class="text-end">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for socio in socios %}
+            <tr>
+                <td>
+                    {% if socio.foto_perfil %}
+                        <img src="{{ socio.foto_perfil.url }}" alt="Foto" class="rounded-circle object-fit-cover" width="45" height="45">
+                    {% else %}
+                        <div class="bg-secondary bg-opacity-20 text-secondary rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 45px; height: 45px;">
+                            {{ socio.nombre|slice:":1" }}
+                        </div>
+                    {% endif %}
+                </td>
+                <td class="fw-semibold">{{ socio.rut }}</td>
+                <td>{{ socio.nombre }}</td>
+                <td>{{ socio.email }}</td>
+                <td>{{ socio.telefono }}</td>
+                <td>{{ socio.fecha_registro|date:"d/m/Y" }}</td>
+                <td class="text-end">
+                    {% if perms.biblioteca.change_socio %}
+                    <a href="{% url 'biblioteca:socio_update' socio.pk %}" class="btn btn-sm btn-outline-warning me-1" title="Editar">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+                    {% endif %}
+                    {% if perms.biblioteca.delete_socio %}
+                    <a href="{% url 'biblioteca:socio_delete' socio.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center py-4 text-muted">No se encontraron socios registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

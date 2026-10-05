@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | Sistema Biblioteca{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold text-dark mb-1">Bienvenido al Panel de Control</h2>
+        <p class="text-muted">Resumen general del estado de la biblioteca</p>
+    </div>
+</div>
+
+<!-- Tarjetas de Métricas -->
+<div class="row g-4 mb-5">
+    <div class="col-md-3">
+        <div class="card card-custom border-start border-primary border-4 p-3">
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 bg-primary bg-opacity-10 p-3 rounded-circle text-primary me-3">
+                    <i class="fa-solid fa-users fa-2x"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1">Total Socios</h6>
+                    <h3 class="fw-bold mb-0">{{ total_socios }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-custom border-start border-success border-4 p-3">
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 bg-success bg-opacity-10 p-3 rounded-circle text-success me-3">
+                    <i class="fa-solid fa-book fa-2x"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1">Total Libros</h6>
+                    <h3 class="fw-bold mb-0">{{ total_libros }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-custom border-start border-info border-4 p-3">
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 bg-info bg-opacity-10 p-3 rounded-circle text-info me-3">
+                    <i class="fa-solid fa-handshake fa-2x"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1">Histórico Préstamos</h6>
+                    <h3 class="fw-bold mb-0">{{ total_prestamos }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-custom border-start border-warning border-4 p-3">
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 bg-warning bg-opacity-10 p-3 rounded-circle text-warning me-3">
+                    <i class="fa-solid fa-clock-rotate-left fa-2x"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1">Préstamos Activos</h6>
+                    <h3 class="fw-bold mb-0">{{ prestamos_activos }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Acceso Rápido -->
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-custom p-4 text-center">
+            <i class="fa-solid fa-id-card fa-3x text-primary mb-3"></i>
+            <h5>Gestión de Socios</h5>
+            <p class="text-muted small">Administra las fichas de socios y sus fotos de perfil.</p>
+            <a href="{% url 'biblioteca:socio_list' %}" class="btn btn-outline-primary btn-sm rounded-pill">Ver Socios</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-custom p-4 text-center">
+            <i class="fa-solid fa-book-open fa-3x text-success mb-3"></i>
+            <h5>Catálogo de Libros</h5>
+            <p class="text-muted small">Consulta el inventario y descarga las fichas en PDF.</p>
+            <a href="{% url 'biblioteca:libro_list' %}" class="btn btn-outline-success btn-sm rounded-pill">Ver Libros</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-custom p-4 text-center">
+            <i class="fa-solid fa-receipt fa-3x text-info mb-3"></i>
+            <h5>Transacciones</h5>
+            <p class="text-muted small">Registra nuevos préstamos y actualiza su devolución.</p>
+            <a href="{% url 'biblioteca:prestamo_list' %}" class="btn btn-outline-info btn-sm rounded-pill">Ver Préstamos</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Préstamos | Sistema Biblioteca{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-dark mb-0">Entidad Transaccional: Préstamos</h2>
+        <p class="text-muted small mb-0">Registro de préstamos relacionando Socio y Libro mediante ForeignKeys</p>
+    </div>
+    {% if perms.biblioteca.add_prestamo %}
+    <a href="{% url 'biblioteca:prestamo_create' %}" class="btn btn-info text-white shadow-sm rounded-pill">
+        <i class="fa-solid fa-plus me-1"></i> Nuevo Préstamo
+    </a>
+    {% endif %}
+</div>
+
+<!-- Buscador -->
+<div class="card card-custom p-3 mb-4">
+    <form method="GET" class="row g-2">
+        <div class="col-md-10">
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                <input type="text" name="q" value="{{ query }}" class="form-control border-start-0" placeholder="Buscar por Socio, Libro o Estado...">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-secondary w-100"><i class="fa-solid fa-search me-1"></i> Buscar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Tabla de Préstamos -->
+<div class="table-responsive table-custom">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Socio</th>
+                <th>Libro Prestado</th>
+                <th>Fecha Préstamo</th>
+                <th>Fecha Devolución</th>
+                <th>Estado</th>
+                <th class="text-end">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prestamo in prestamos %}
+            <tr>
+                <td class="fw-bold text-muted">#{{ prestamo.id }}</td>
+                <td>
+                    <i class="fa-solid fa-user me-1 text-secondary"></i>{{ prestamo.socio.nombre }}
+                    <small class="d-block text-muted">{{ prestamo.socio.rut }}</small>
+                </td>
+                <td>
+                    <i class="fa-solid fa-book me-1 text-primary"></i>{{ prestamo.libro.titulo }}
+                </td>
+                <td>{{ prestamo.fecha_prestamo|date:"d/m/Y" }}</td>
+                <td>{{ prestamo.fecha_devolucion|date:"d/m/Y" }}</td>
+                <td>
+                    {% if prestamo.estado == 'Prestado' %}
+                        <span class="badge bg-warning text-dark"><i class="fa-solid fa-clock me-1"></i>Prestado</span>
+                    {% elif prestamo.estado == 'Devuelto' %}
+                        <span class="badge bg-success"><i class="fa-solid fa-check me-1"></i>Devuelto</span>
+                    {% else %}
+                        <span class="badge bg-danger"><i class="fa-solid fa-triangle-exclamation me-1"></i>Atrasado</span>
+                    {% endif %}
+                </td>
+                <td class="text-end">
+                    {% if perms.biblioteca.change_prestamo %}
+                    <a href="{% url 'biblioteca:prestamo_update' prestamo.pk %}" class="btn btn-sm btn-outline-warning me-1" title="Editar">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+                    {% endif %}
+                    {% if perms.biblioteca.delete_prestamo %}
+                    <a href="{% url 'biblioteca:prestamo_delete' prestamo.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center py-4 text-muted">No se registran préstamos.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
